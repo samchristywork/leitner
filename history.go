@@ -13,7 +13,9 @@ type historyLine struct {
 }
 
 func readHistory() []historyLine {
-	contents, err := ioutil.ReadFile("/home/sam/.flash_history")
+	home := os.Getenv("HOME")
+
+	contents, err := ioutil.ReadFile(home + "/.flash_history")
 	if err != nil {
 		fmt.Println("Error reading ~/.flash_history. You should create it if it doesn't exist.")
 		os.Exit(1)
