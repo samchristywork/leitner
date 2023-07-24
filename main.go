@@ -33,7 +33,7 @@ func processArgs(args []string, decks map[string][]Flashcard, config Config) {
 			fmt.Println("Bins:")
 			fmt.Println("")
 
-			printBins(decks)
+			printBins(decks, "")
 
 			os.Exit(0)
 		}

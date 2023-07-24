@@ -72,17 +72,19 @@ func die(status int) {
 	os.Exit(status)
 }
 
-func binHistogram(decks map[string][]Flashcard) map[uint32]int {
+func binHistogram(decks map[string][]Flashcard, deckFilter string) map[uint32]int {
 	bins := make(map[uint32]int)
 
 	for _, cards := range decks {
 		for _, card := range cards {
-			bin := card.bin
+			if card.deck == deckFilter || deckFilter == "" {
+				bin := card.bin
 
-			if _, ok := bins[bin]; !ok {
-				bins[bin] = 1
-			} else {
-				bins[bin]++
+				if _, ok := bins[bin]; !ok {
+					bins[bin] = 1
+				} else {
+					bins[bin]++
+				}
 			}
 		}
 	}
@@ -90,8 +92,8 @@ func binHistogram(decks map[string][]Flashcard) map[uint32]int {
 	return bins
 }
 
-func printBins(decks map[string][]Flashcard) {
-	histogram := binHistogram(decks)
+func printBins(decks map[string][]Flashcard, deckFilter string) {
+	histogram := binHistogram(decks, deckFilter)
 
 	keys := []uint32{}
 	for key := range histogram {

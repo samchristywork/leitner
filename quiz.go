@@ -69,7 +69,7 @@ func quiz(decks map[string][]Flashcard, config Config) QuizScore {
 	reset()
 	fmt.Println("")
 
-	printBins(decks)
+	printBins(decks, selected_deck)
 
 	fmt.Println("")
 	fmt.Print("❯ ")
