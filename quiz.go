@@ -27,7 +27,7 @@ func writeQuestionToFile(card Flashcard, currentQuestion int, totalQuestions int
 	}
 }
 
-func appendResultToFile(card Flashcard, result bool) {
+func appendResultToFile(card Flashcard, result bool, config Config) {
 	f, err := os.OpenFile("/home/sam/.flash_history", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		fmt.Println(err)
@@ -55,7 +55,7 @@ func appendResultToFile(card Flashcard, result bool) {
 	}
 }
 
-func askQuestion(card Flashcard, currentQuestion int, totalQuestions int) bool {
+func askQuestion(card Flashcard, currentQuestion int, totalQuestions int, config Config) bool {
 	result := true
 
 	for {
@@ -114,15 +114,15 @@ func askQuestion(card Flashcard, currentQuestion int, totalQuestions int) bool {
 		}
 	}
 
-	appendResultToFile(card, result)
+	appendResultToFile(card, result, config)
 	return result
 }
 
-func administerQuiz(questions []Flashcard) QuizScore {
+func administerQuiz(questions []Flashcard, config Config) QuizScore {
 	score := QuizScore{0, 0}
 
 	for n, card := range questions {
-		result := askQuestion(card, n+1, len(questions))
+		result := askQuestion(card, n+1, len(questions), config)
 
 		if result {
 			score.correct++
@@ -134,7 +134,7 @@ func administerQuiz(questions []Flashcard) QuizScore {
 	return score
 }
 
-func quiz(decks map[string][]Flashcard) QuizScore {
+func quiz(decks map[string][]Flashcard, config Config) QuizScore {
 	clearScreen()
 
 	var selected_num int
@@ -206,7 +206,7 @@ func quiz(decks map[string][]Flashcard) QuizScore {
 
 	randomizedQuestions := shuffle(questions, selected_num)
 
-	score := administerQuiz(randomizedQuestions)
+	score := administerQuiz(randomizedQuestions, config)
 	return score
 }
 

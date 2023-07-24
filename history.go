@@ -12,12 +12,10 @@ type historyLine struct {
 	correct bool
 }
 
-func readHistory() []historyLine {
-	home := os.Getenv("HOME")
-
-	contents, err := ioutil.ReadFile(home + "/.flash_history")
+func readHistory(filename string) []historyLine {
+	contents, err := ioutil.ReadFile(filename)
 	if err != nil {
-		fmt.Println("Error reading ~/.flash_history. You should create it if it doesn't exist.")
+		fmt.Println("Error reading "+filename+". You should create it if it doesn't exist.")
 		os.Exit(1)
 	}
 
@@ -30,7 +28,7 @@ func readHistory() []historyLine {
 
 		parts := strings.Split(line, "	")
 		if len(parts) != 2 {
-			fmt.Println("Error reading ~/.flash_history.")
+			fmt.Println("Error reading "+filename+".")
 			os.Exit(1)
 		}
 
