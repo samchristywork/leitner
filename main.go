@@ -13,6 +13,11 @@ type Config struct {
 	historyFile string
 }
 
+func dumpConfig(config Config) {
+	fmt.Println("deckdir: " + config.deckdir)
+	fmt.Println("history: " + config.historyFile)
+}
+
 func readConfigFile(filename string) Config {
 	config := Config{}
 
@@ -56,19 +61,24 @@ func usage() {
 	os.Exit(0)
 }
 
-func processArgs(args []string, decks map[string][]Flashcard) {
+func processArgs(args []string, decks map[string][]Flashcard, config Config) {
 	if len(args) == 1 {
 		if args[0] == "quiz" {
 			alternateScreen()
-			results := quiz(decks)
+			results := quiz(decks, config)
 
 			restoreScreen()
 			printQuizResults(results)
+
 			os.Exit(0)
 		}
-	}
 
-	if len(args) == 1 {
+		if args[0] == "dump" {
+			dumpConfig(config)
+
+			os.Exit(0)
+		}
+
 		if args[0] == "bins" {
 			fmt.Println("Bins:")
 			fmt.Println("")
@@ -77,9 +87,7 @@ func processArgs(args []string, decks map[string][]Flashcard) {
 
 			os.Exit(0)
 		}
-	}
 
-	if len(args) == 1 {
 		if args[0] == "list" {
 			blue()
 			fmt.Println("Decks:")
@@ -123,14 +131,18 @@ func processArgs(args []string, decks map[string][]Flashcard) {
 }
 
 func main() {
-	history := readHistory()
+	home := os.Getenv("HOME")
 
-	cards := processDirectory(history, "./")
+	configFilename := home + "/.config/leitner/config"
+
+	config := readConfigFile(configFilename)
+	history := readHistory(config.historyFile)
+	cards := processDirectory(history, config.deckdir)
 
 	decks := make(map[string][]Flashcard)
 	for _, card := range cards {
 		decks[card.deck] = append(decks[card.deck], card)
 	}
 
-	processArgs(os.Args[1:], decks)
+	processArgs(os.Args[1:], decks, config)
 }
