@@ -80,10 +80,12 @@ func askQuestion(card Flashcard, currentQuestion int, totalQuestions int, config
 		reset()
 		parts := strings.Split(string(content), "---\n")
 		fmt.Println(parts[1])
-		green()
+		blue()
 		fmt.Println("Correct answer:")
 		reset()
+		green()
 		fmt.Println(card.back)
+		reset()
 		fmt.Println("")
 
 		blue()
