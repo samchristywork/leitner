@@ -9,7 +9,7 @@ import (
 )
 
 type Config struct {
-	deckdir string
+	deckdir     string
 	historyFile string
 }
 
@@ -29,7 +29,7 @@ func readConfigFile(filename string) Config {
 
 	_, err := os.Stat(filename)
 	if os.IsNotExist(err) {
-		fmt.Println("Config file ("+filename+") not found")
+		fmt.Println("Config file (" + filename + ") not found")
 		os.Exit(0)
 	}
 

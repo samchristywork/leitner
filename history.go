@@ -15,7 +15,7 @@ type historyLine struct {
 func readHistory(filename string) []historyLine {
 	contents, err := ioutil.ReadFile(filename)
 	if err != nil {
-		fmt.Println("Error reading "+filename+". You should create it if it doesn't exist.")
+		fmt.Println("Error reading " + filename + ". You should create it if it doesn't exist.")
 		os.Exit(1)
 	}
 
@@ -28,7 +28,7 @@ func readHistory(filename string) []historyLine {
 
 		parts := strings.Split(line, "	")
 		if len(parts) != 2 {
-			fmt.Println("Error reading "+filename+".")
+			fmt.Println("Error reading " + filename + ".")
 			os.Exit(1)
 		}
 
