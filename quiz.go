@@ -25,7 +25,7 @@ func administerQuiz(questions []Flashcard, config Config) QuizScore {
 	return score
 }
 
-func quiz(decks map[string][]Flashcard, config Config) QuizScore {
+func quiz(cards []Flashcard, config Config) QuizScore {
 	clearScreen()
 
 	var selected_num int
@@ -53,9 +53,7 @@ func quiz(decks map[string][]Flashcard, config Config) QuizScore {
 	reset()
 	fmt.Println("")
 
-	for deck := range decks {
-		fmt.Println("•", deck)
-	}
+	printDecks(cards)
 
 	fmt.Println("")
 	fmt.Print("❯ ")
@@ -69,7 +67,7 @@ func quiz(decks map[string][]Flashcard, config Config) QuizScore {
 	reset()
 	fmt.Println("")
 
-	printBins(decks, selected_deck)
+	printBins(cards, selected_deck)
 
 	fmt.Println("")
 	fmt.Print("❯ ")
@@ -77,12 +75,10 @@ func quiz(decks map[string][]Flashcard, config Config) QuizScore {
 	fmt.Scanf("%d", &selected_bin)
 
 	questions := []Flashcard{}
-	for _, deck := range decks {
-		for _, card := range deck {
-			if card.bin == uint32(selected_bin) || selected_bin == 0 {
-				if card.deck == selected_deck || selected_deck == "" {
-					questions = append(questions, card)
-				}
+	for _, card := range cards {
+		if card.bin == uint32(selected_bin) || selected_bin == 0 {
+			if card.deck == selected_deck || selected_deck == "" {
+				questions = append(questions, card)
 			}
 		}
 	}

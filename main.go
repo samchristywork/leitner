@@ -11,11 +11,11 @@ func usage() {
 	os.Exit(0)
 }
 
-func processArgs(args []string, decks map[string][]Flashcard, config Config) {
+func processArgs(args []string, cards []Flashcard, config Config) {
 	if len(args) == 1 {
 		if args[0] == "quiz" {
 			alternateScreen()
-			results := quiz(decks, config)
+			results := quiz(cards, config)
 
 			restoreScreen()
 			printQuizResults(results)
@@ -33,7 +33,7 @@ func processArgs(args []string, decks map[string][]Flashcard, config Config) {
 			fmt.Println("Bins:")
 			fmt.Println("")
 
-			printBins(decks, "")
+			printBins(cards, "")
 
 			os.Exit(0)
 		}
@@ -44,17 +44,7 @@ func processArgs(args []string, decks map[string][]Flashcard, config Config) {
 			reset()
 			fmt.Println("")
 
-			sortedDecks := []string{}
-
-			for deck := range decks {
-				sortedDecks = append(sortedDecks, deck)
-			}
-
-			sort.Strings(sortedDecks)
-
-			for _, deck := range sortedDecks {
-				fmt.Println("•", deck)
-			}
+			printDecks(cards)
 
 			os.Exit(0)
 		}
@@ -64,12 +54,11 @@ func processArgs(args []string, decks map[string][]Flashcard, config Config) {
 
 	if len(args) == 2 {
 		if args[0] == "list" {
-			if _, ok := decks[args[1]]; !ok {
-				fmt.Println("Deck not found")
-			}
 
-			for _, card := range decks[args[1]] {
-				fmt.Println(card)
+			for _, card := range cards {
+				if card.deck == args[1] {
+					fmt.Println(card)
+				}
 			}
 			os.Exit(0)
 		}
@@ -89,10 +78,5 @@ func main() {
 	history := readHistory(config.historyFile)
 	cards := processDirectory(history, config.deckdir)
 
-	decks := make(map[string][]Flashcard)
-	for _, card := range cards {
-		decks[card.deck] = append(decks[card.deck], card)
-	}
-
-	processArgs(os.Args[1:], decks, config)
+	processArgs(os.Args[1:], cards, config)
 }
