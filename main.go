@@ -81,8 +81,8 @@ func main() {
 	configFilename := home + "/.config/leitner/config"
 
 	config := readConfigFile(configFilename)
-	history := readHistory(config.historyFile)
-	cards := processDirectory(history, config.deckdir)
+	history := readHistory(config.history_filename)
+	cards := processDirectory(history, config.deck_dir)
 
 	processArgs(cards, config)
 }
