@@ -82,7 +82,7 @@ func main() {
 
 	config := readConfigFile(configFilename)
 	history := readHistory(config.history_filename)
-	cards := processDirectory(history, config.deck_dir)
+	cards := processDirectory(history, config)
 
 	processArgs(cards, config)
 }

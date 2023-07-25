@@ -7,11 +7,11 @@ import (
 	"strings"
 )
 
-func processFile(fi os.FileInfo, history []historyLine, dir string) []Flashcard {
+func processFile(fi os.FileInfo, history []historyLine, config Config) []Flashcard {
 	cards := make([]Flashcard, 0)
 
-	if fi.Name()[len(fi.Name())-3:] == ".dm" {
-		contents, err := ioutil.ReadFile(dir + fi.Name())
+	if fi.Name()[len(fi.Name())-len(config.suffix):] == config.suffix {
+		contents, err := ioutil.ReadFile(config.deck_dir + "/" + fi.Name())
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -44,10 +44,10 @@ func processFile(fi os.FileInfo, history []historyLine, dir string) []Flashcard 
 	return cards
 }
 
-func processDirectory(history []historyLine, dirname string) []Flashcard {
+func processDirectory(history []historyLine, config Config) []Flashcard {
 	cards := make([]Flashcard, 0)
 
-	dir, err := os.Open(dirname)
+	dir, err := os.Open(config.deck_dir)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -64,7 +64,7 @@ func processDirectory(history []historyLine, dirname string) []Flashcard {
 
 	for _, fi := range fileInfos {
 		if fi.Mode().IsRegular() {
-			newCards := processFile(fi, history, dir.Name()+"/")
+			newCards := processFile(fi, history, config)
 			cards = append(cards, newCards...)
 		}
 	}
