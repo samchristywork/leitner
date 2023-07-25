@@ -6,7 +6,7 @@ import (
 )
 
 func usage() {
-	fmt.Println("Usage: "+os.Args[0]+" <command> [<args>]")
+	fmt.Println("Usage: " + os.Args[0] + " <command> [<args>]")
 	fmt.Println("")
 	fmt.Println("Commands:")
 	fmt.Println("  quiz")
