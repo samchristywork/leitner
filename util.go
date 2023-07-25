@@ -104,3 +104,24 @@ func printBins(cards []Flashcard, deckFilter string) {
 		fmt.Printf("• Bin %d: %d\n", key, histogram[key])
 	}
 }
+
+func printDecks(cards []Flashcard) {
+	decks := make(map[string]bool)
+
+	for _, card := range cards {
+		if _, ok := decks[card.deck]; !ok {
+			decks[card.deck] = true
+		}
+	}
+
+	keys := []string{}
+	for key := range decks {
+		keys = append(keys, key)
+	}
+
+	sort.Strings(keys)
+
+	for _, key := range keys {
+		fmt.Println("•", key)
+	}
+}
