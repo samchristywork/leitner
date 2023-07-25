@@ -9,10 +9,10 @@ import (
 )
 
 type Config struct {
-	deck_dir     string
-	suffix string
-	question_filename string
-	history_filename string
+	deck_dir              string
+	suffix                string
+	question_filename     string
+	history_filename      string
 	incorrect_review_time int
 }
 

@@ -8,12 +8,12 @@ import (
 	"time"
 )
 
-func writeQuestionToFile(card Flashcard, currentQuestion int, totalQuestions int) {
+func writeQuestionToFile(card Flashcard, currentQuestion int, totalQuestions int, config Config) {
 	question := fmt.Sprintf("\n%s", card.front)
 
 	content := []byte("Question " + fmt.Sprint(currentQuestion) + "/" + fmt.Sprint(totalQuestions) + " (" + card.deck + ")\n" + question + "\n---\n")
 
-	err := ioutil.WriteFile("/tmp/flashQuestion.txt", []byte(content), 0644)
+	err := ioutil.WriteFile(config.question_filename, []byte(content), 0644)
 	if err != nil {
 		fmt.Println(err)
 
@@ -23,7 +23,7 @@ func writeQuestionToFile(card Flashcard, currentQuestion int, totalQuestions int
 }
 
 func appendResultToFile(card Flashcard, result bool, config Config) {
-	f, err := os.OpenFile("/home/sam/.flash_history", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	f, err := os.OpenFile(config.history_filename, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		fmt.Println(err)
 
@@ -54,13 +54,13 @@ func askQuestion(card Flashcard, currentQuestion int, totalQuestions int, config
 	result := true
 
 	for {
-		writeQuestionToFile(card, currentQuestion, totalQuestions)
+		writeQuestionToFile(card, currentQuestion, totalQuestions, config)
 
 		restoreScreen()
-		execProgram("nvim", []string{"-c", ":normal! Go", "--clean", "/tmp/flashQuestion.txt"})
+		execProgram("nvim", []string{"-c", ":normal! Go", "--clean", config.question_filename})
 		alternateScreen()
 
-		content, err := ioutil.ReadFile("/tmp/flashQuestion.txt")
+		content, err := ioutil.ReadFile(config.question_filename)
 		if err != nil {
 			fmt.Println(err)
 
