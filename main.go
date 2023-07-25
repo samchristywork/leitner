@@ -6,7 +6,15 @@ import (
 )
 
 func usage() {
-	fmt.Println("Usage: flash [quiz|list|bins] [deck]")
+	fmt.Println("Usage: "+os.Args[0]+" <command> [<args>]")
+	fmt.Println("")
+	fmt.Println("Commands:")
+	fmt.Println("  quiz")
+	fmt.Println("  list bins")
+	fmt.Println("  list config")
+	fmt.Println("  list deck <deck>")
+	fmt.Println("  list decks")
+	fmt.Println("  list cards")
 	os.Exit(0)
 }
 
