@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"sort"
 )
 
 func usage() {
@@ -54,12 +53,19 @@ func processArgs(args []string, cards []Flashcard, config Config) {
 
 	if len(args) == 2 {
 		if args[0] == "list" {
+			found := false
 
 			for _, card := range cards {
 				if card.deck == args[1] {
 					fmt.Println(card)
+					found = true
 				}
 			}
+
+			if !found {
+				fmt.Println("Deck not found")
+			}
+
 			os.Exit(0)
 		}
 
