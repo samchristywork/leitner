@@ -27,14 +27,14 @@ func readHistory(filename string) []historyLine {
 		}
 
 		parts := strings.Split(line, "	")
-		if len(parts) != 3 {
-			fmt.Println("Error reading " + filename + ".")
-			os.Exit(1)
+
+		if parts[0] == "quiz" && len(parts) == 3 {
+			lines = append(lines, historyLine{parts[1], parts[2] == "correct"})
+			continue
 		}
 
-		if parts[0] == "quiz" {
-			lines = append(lines, historyLine{parts[1], parts[2] == "correct"})
-		}
+		fmt.Println("Error reading " + filename + ".")
+		os.Exit(1)
 	}
 
 	return lines
