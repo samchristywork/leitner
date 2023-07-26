@@ -34,14 +34,14 @@ func appendResultToFile(card Flashcard, result bool, config Config) {
 	defer f.Close()
 
 	if result {
-		if _, err := f.WriteString(card.String() + "	correct\n"); err != nil {
+		if _, err := f.WriteString("quiz	" + card.String() + "	correct\n"); err != nil {
 			fmt.Println(err)
 
 			restoreScreen()
 			os.Exit(1)
 		}
 	} else {
-		if _, err := f.WriteString(card.String() + "	incorrect\n"); err != nil {
+		if _, err := f.WriteString("quiz	" + card.String() + "	incorrect\n"); err != nil {
 			fmt.Println(err)
 
 			restoreScreen()
