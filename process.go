@@ -7,39 +7,46 @@ import (
 	"strings"
 )
 
+func processLine(line string, history []historyLine) Flashcard {
+	card := parseFlashcard(line)
+
+	for _, line := range history {
+		if card.String() == line.card {
+			if line.correct {
+				card.bin += 1
+			} else {
+				card.bin = 1
+			}
+
+			if card.bin > 5 {
+				card.bin = 5
+			}
+
+			card.last_reviewed = line.last_reviewed
+		}
+	}
+
+	return card
+}
+
 func processFile(fi os.FileInfo, history []historyLine, config Config) []Flashcard {
 	cards := make([]Flashcard, 0)
 
-	if fi.Name()[len(fi.Name())-len(config.suffix):] == config.suffix {
-		contents, err := ioutil.ReadFile(config.deck_dir + "/" + fi.Name())
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
+	if fi.Name()[len(fi.Name())-len(config.suffix):] != config.suffix {
+		return cards
+	}
 
-		lines := strings.Split(string(contents), "\n")
-		for _, line := range lines {
-			if len(line) > 7 && line[:7] == "#flash|" {
-				card := parseFlashcard(line)
+	contents, err := ioutil.ReadFile(config.deck_dir + "/" + fi.Name())
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 
-				for _, line := range history {
-					if card.String() == line.card {
-						if line.correct {
-							card.bin += 1
-						} else {
-							card.bin = 1
-						}
-
-						if card.bin > 5 {
-							card.bin = 5
-						}
-
-						card.last_reviewed = line.last_reviewed
-					}
-				}
-
-				cards = append(cards, card)
-			}
+	lines := strings.Split(string(contents), "\n")
+	for _, line := range lines {
+		if len(line) > 7 && line[:7] == "#flash|" {
+			card := processLine(line, history)
+			cards = append(cards, card)
 		}
 	}
 
