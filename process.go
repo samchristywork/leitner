@@ -20,7 +20,7 @@ func processFile(fi os.FileInfo, history []historyLine, config Config) []Flashca
 		lines := strings.Split(string(contents), "\n")
 		for _, line := range lines {
 			if len(line) > 7 && line[:7] == "#flash|" {
-				card := parseFlashcard(line, history)
+				card := parseFlashcard(line)
 
 				for _, line := range history {
 					if card.String() == line.card {
@@ -33,6 +33,8 @@ func processFile(fi os.FileInfo, history []historyLine, config Config) []Flashca
 						if card.bin > 5 {
 							card.bin = 5
 						}
+
+						card.last_reviewed = line.last_reviewed
 					}
 				}
 

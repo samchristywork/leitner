@@ -7,10 +7,11 @@ import (
 )
 
 type Flashcard struct {
-	deck  string
-	front string
-	back  string
-	bin   uint32
+	deck          string
+	front         string
+	back          string
+	bin           uint32
+	last_reviewed int64
 }
 
 func (f Flashcard) String() string {
@@ -21,7 +22,7 @@ func (f Flashcard) hashFlashcard() uint32 {
 	return hashString(f.String())
 }
 
-func parseFlashcard(s string, history []historyLine) Flashcard {
+func parseFlashcard(s string) Flashcard {
 	segments := strings.Split(s, "|")
 	if len(segments) != 4 {
 		fmt.Println("Error: flashcard has wrong number of segments")
@@ -32,5 +33,5 @@ func parseFlashcard(s string, history []historyLine) Flashcard {
 	front := segments[2]
 	back := segments[3]
 
-	return Flashcard{deck, front, back, 1}
+	return Flashcard{deck, front, back, 1, 0}
 }
