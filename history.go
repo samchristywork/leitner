@@ -33,6 +33,12 @@ func readHistory(filename string) []historyLine {
 		if parts[0] == "quiz" && len(parts) == 3 {
 			lines = append(lines, historyLine{parts[1], parts[2] == "correct", 0})
 			continue
+		} else if parts[0] == "quiz" && len(parts) == 4 {
+			timestamp, err := strconv.Atoi(parts[3])
+			if err == nil {
+				lines = append(lines, historyLine{parts[1], parts[2] == "correct", int64(timestamp)})
+				continue
+			}
 		}
 
 		fmt.Println("Error reading " + filename + ".")
