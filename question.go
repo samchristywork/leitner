@@ -106,8 +106,8 @@ func askQuestion(card Flashcard, currentQuestion int, totalQuestions int, config
 			red()
 			fmt.Println("Incorrect!")
 			reset()
-			fmt.Println("Study for 10 seconds and try again.")
-			time.Sleep(10 * time.Second)
+			fmt.Println("Study for " + fmt.Sprint(config.incorrect_review_time) + " seconds and try again.")
+			time.Sleep(time.Duration(config.incorrect_review_time) * time.Second)
 		}
 	}
 
