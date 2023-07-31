@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"time"
 )
 
 func usage() {
@@ -11,10 +12,11 @@ func usage() {
 	fmt.Println("Commands:")
 	fmt.Println("  quiz")
 	fmt.Println("  list bins")
+	fmt.Println("  list cards")
 	fmt.Println("  list config")
 	fmt.Println("  list deck <deck>")
 	fmt.Println("  list decks")
-	fmt.Println("  list cards")
+	fmt.Println("  list stale")
 	os.Exit(0)
 }
 
@@ -67,6 +69,22 @@ func processArgs(cards []Flashcard, config Config) {
 	} else if len(args) == 3 && args[1] == "list" && args[2] == "cards" {
 		for _, card := range cards {
 			fmt.Println(card)
+		}
+
+		os.Exit(0)
+	} else if len(args) == 3 && args[1] == "list" && args[2] == "stale" {
+		daysSinceLastReviewed := make(map[int]int)
+
+		for _, card := range cards {
+			now := time.Now().Unix()
+
+			days := (now - card.last_reviewed) / (60 * 60 * 24)
+
+			daysSinceLastReviewed[int(days)]++
+		}
+
+		for days, count := range daysSinceLastReviewed {
+			fmt.Printf("%d days: %d\n", days, count)
 		}
 
 		os.Exit(0)
