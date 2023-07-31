@@ -25,19 +25,9 @@ func administerQuiz(questions []Flashcard, config Config) QuizScore {
 	return score
 }
 
-func quiz(cards []Flashcard, config Config) QuizScore {
-	clearScreen()
-
+func askNumCards() int {
 	var selected_num int
-	var selected_deck string
-	var selected_bin int
 
-	blue()
-	fmt.Println("Filters:")
-	reset()
-	fmt.Println("")
-
-	// Filter by number of cards
 	blue()
 	fmt.Println("How many cards? (0 for all)")
 	reset()
@@ -46,7 +36,12 @@ func quiz(cards []Flashcard, config Config) QuizScore {
 
 	fmt.Scanf("%d", &selected_num)
 
-	// Filter by deck
+	return selected_num
+}
+
+func askDeck(cards []Flashcard) string {
+	var selected_deck string
+
 	blue()
 	fmt.Println("")
 	fmt.Println("Which deck? (Empty for all decks)")
@@ -60,7 +55,12 @@ func quiz(cards []Flashcard, config Config) QuizScore {
 
 	fmt.Scanf("%s", &selected_deck)
 
-	// Filter by bin
+	return selected_deck
+}
+
+func askBin(cards []Flashcard, selected_deck string) int {
+	var selected_bin int
+
 	blue()
 	fmt.Println("")
 	fmt.Println("Which bin? (Empty for all bins)")
@@ -73,6 +73,21 @@ func quiz(cards []Flashcard, config Config) QuizScore {
 	fmt.Print("❯ ")
 
 	fmt.Scanf("%d", &selected_bin)
+
+	return selected_bin
+}
+
+func quiz(cards []Flashcard, config Config) QuizScore {
+	clearScreen()
+
+	blue()
+	fmt.Println("Filters:")
+	reset()
+	fmt.Println("")
+
+	selected_num := askNumCards()
+	selected_deck := askDeck(cards)
+	selected_bin := askBin(cards, selected_deck)
 
 	questions := []Flashcard{}
 	for _, card := range cards {
