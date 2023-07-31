@@ -25,7 +25,7 @@ func (f Flashcard) hashFlashcard() uint32 {
 func parseFlashcard(s string) Flashcard {
 	segments := strings.Split(s, "|")
 	if len(segments) != 4 {
-		fmt.Println("Error: flashcard has wrong number of segments")
+		fmt.Printf("Error: flashcard has wrong number of segments: %s\n", s)
 		os.Exit(1)
 	}
 
