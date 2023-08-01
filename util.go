@@ -100,8 +100,10 @@ func printBins(cards []Flashcard, deckFilter string) {
 
 	sort.Slice(keys, func(i, j int) bool { return keys[i] < keys[j] })
 
+	fmt.Println("Bin\tCount")
+	fmt.Println("───\t─────")
 	for _, key := range keys {
-		fmt.Printf("• Bin %d: %d\n", key, histogram[key])
+		fmt.Printf("%d\t%d\n", key, histogram[key])
 	}
 }
 
