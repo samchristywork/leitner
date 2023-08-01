@@ -125,3 +125,29 @@ func printDecks(cards []Flashcard) {
 		fmt.Println("•", key)
 	}
 }
+
+func printDaysSince(cards []Flashcard) {
+	daysSinceLastReviewed := make(map[int]int)
+
+	for _, card := range cards {
+		now := time.Now().Unix()
+
+		days := (now - card.last_reviewed) / (60 * 60 * 24)
+
+		if card.last_reviewed == 0 {
+			days = -1
+		}
+
+		daysSinceLastReviewed[int(days)]++
+	}
+
+	fmt.Println("Days\tCount")
+	fmt.Println("────\t─────")
+	for days, count := range daysSinceLastReviewed {
+		if days == -1 {
+			fmt.Printf("∞\t%d\n", count)
+		} else {
+			fmt.Printf("%d\t%d\n", days, count)
+		}
+	}
+}
