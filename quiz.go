@@ -78,8 +78,29 @@ func askBin(cards []Flashcard, selected_deck string) int {
 	return selected_bin
 }
 
+func askTime(cards []Flashcard) int64 {
+	var selected_time int64
+
+	blue()
+	fmt.Println("")
+	fmt.Println("How stale (in days) should the cards be? (0 for no filter)")
+	reset()
+	fmt.Println("")
+
+	printDaysSince(cards)
+
+	fmt.Println("")
+	fmt.Print("❯ ")
+
+	fmt.Scanf("%d", &selected_time)
+
+	return selected_time
+}
+
 func quiz(cards []Flashcard, config Config) QuizScore {
 	clearScreen()
+
+	now := time.Now().Unix()
 
 	blue()
 	fmt.Println("Filters:")
@@ -89,12 +110,17 @@ func quiz(cards []Flashcard, config Config) QuizScore {
 	selected_num := askNumCards()
 	selected_deck := askDeck(cards)
 	selected_bin := askBin(cards, selected_deck)
+	selected_time := askTime(cards)
 
 	questions := []Flashcard{}
 	for _, card := range cards {
 		if card.bin == uint32(selected_bin) || selected_bin == 0 {
 			if card.deck == selected_deck || selected_deck == "" {
-				questions = append(questions, card)
+				if selected_time == 0 ||
+					card.last_reviewed == 0 ||
+					int64(now)-card.last_reviewed < selected_time*24*60*60 {
+					questions = append(questions, card)
+				}
 			}
 		}
 	}
