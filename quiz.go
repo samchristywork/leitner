@@ -118,7 +118,7 @@ func quiz(cards []Flashcard, config Config) QuizScore {
 			if card.deck == selected_deck || selected_deck == "" {
 				if selected_time == 0 ||
 					card.last_reviewed == 0 ||
-					int64(now)-card.last_reviewed < selected_time*24*60*60 {
+					int64(now)-card.last_reviewed > selected_time*24*60*60 {
 					questions = append(questions, card)
 				}
 			}
