@@ -82,12 +82,27 @@ func askQuestion(card Flashcard, currentQuestion int, totalQuestions int, config
 		reset()
 		parts := strings.Split(string(content), "---\n")
 		fmt.Println(parts[1])
+
 		blue()
 		fmt.Println("Correct answer:")
 		reset()
+
 		green()
 		fmt.Println(card.back)
+		fmt.Println("")
 		reset()
+
+		blue()
+		fmt.Println("Difference:")
+		reset()
+
+		r := tokenizeString(parts[1])
+		c := tokenizeString(card.back)
+		lcs := lcs(r, c)
+
+		d := diff(r, c, lcs)
+		printDiff(d)
+
 		fmt.Println("")
 
 		blue()
