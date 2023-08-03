@@ -143,13 +143,20 @@ func printDaysSince(cards []Flashcard) {
 		daysSinceLastReviewed[int(days)]++
 	}
 
+	keys := []int{}
+	for key := range daysSinceLastReviewed {
+		keys = append(keys, key)
+	}
+
+	sort.Slice(keys, func(i, j int) bool { return keys[i] < keys[j] })
+
 	fmt.Println("Days\tCount")
 	fmt.Println("────\t─────")
-	for days, count := range daysSinceLastReviewed {
+	for _, days := range keys {
 		if days == -1 {
-			fmt.Printf("∞\t%d\n", count)
+			fmt.Printf("∞\t%d\n", daysSinceLastReviewed[days])
 		} else {
-			fmt.Printf("%d\t%d\n", days, count)
+			fmt.Printf("%d\t%d\n", days, daysSinceLastReviewed[days])
 		}
 	}
 }
