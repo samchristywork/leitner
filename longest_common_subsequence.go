@@ -108,11 +108,16 @@ func printDiff(output []token) {
 }
 
 func tokenizeString(s string) []interface{} {
+	var output []interface{}
+
+	if len(s) == 0 {
+		return output
+	}
+
 	if s[len(s)-1] == '\n' {
 		s = s[:len(s)-1]
 	}
 
-	var output []interface{}
 	var current string
 
 	for _, c := range s {
