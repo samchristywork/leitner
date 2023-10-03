@@ -31,6 +31,7 @@ func max(a, b int) int {
 	if a > b {
 		return a
 	}
+
 	return b
 }
 
@@ -95,6 +96,7 @@ func printDiff(output []token) {
 		case removed:
 			fmt.Print(red_string())
 		}
+
 		fmt.Print(output[i].val)
 
 		if i > 0 {
@@ -138,6 +140,7 @@ func tokenizeString(s string) []interface{} {
 
 func tokenize[T any](s []T) []interface{} {
 	var output []interface{}
+
 	for _, p := range s {
 		output = append(output, p)
 	}

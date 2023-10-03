@@ -61,6 +61,7 @@ func processDirectory(history []historyLine, config Config) []Flashcard {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+
 	defer dir.Close()
 
 	fileInfos, err := dir.Readdir(-1)

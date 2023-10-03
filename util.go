@@ -14,6 +14,7 @@ func hashString(s string) uint32 {
 	for _, c := range s {
 		hash = ((hash << 5) + hash) + uint32(c)
 	}
+
 	return hash
 }
 
@@ -94,6 +95,7 @@ func printBins(cards []Flashcard, deckFilter string) {
 	histogram := binHistogram(cards, deckFilter)
 
 	keys := []uint32{}
+
 	for key := range histogram {
 		keys = append(keys, key)
 	}
@@ -144,6 +146,7 @@ func printDaysSince(cards []Flashcard) {
 	}
 
 	keys := []int{}
+
 	for key := range daysSinceLastReviewed {
 		keys = append(keys, key)
 	}

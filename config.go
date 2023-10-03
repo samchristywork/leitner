@@ -14,6 +14,7 @@ type Config struct {
 	question_filename     string
 	history_filename      string
 	incorrect_review_time int
+	blacklist             []string
 }
 
 func dumpConfig(config Config) {
@@ -22,6 +23,7 @@ func dumpConfig(config Config) {
 	fmt.Println("question_filename: " + config.question_filename)
 	fmt.Println("history_filename: " + config.history_filename)
 	fmt.Println("incorrect_review_time: " + strconv.Itoa(config.incorrect_review_time))
+	fmt.Println("blacklist: " + strings.Join(config.blacklist, ","))
 }
 
 func readConfigFile(filename string) Config {
@@ -56,22 +58,39 @@ func readConfigFile(filename string) Config {
 		if strings.HasPrefix(line, "deck_dir:") {
 			config.deck_dir = strings.TrimSpace(strings.TrimPrefix(line, "deck_dir:"))
 		}
+
 		if strings.HasPrefix(line, "suffix:") {
 			config.suffix = strings.TrimSpace(strings.TrimPrefix(line, "suffix:"))
 		}
+
 		if strings.HasPrefix(line, "question_filename:") {
 			config.question_filename = strings.TrimSpace(strings.TrimPrefix(line, "question_filename:"))
 		}
+
 		if strings.HasPrefix(line, "history_filename:") {
 			config.history_filename = strings.TrimSpace(strings.TrimPrefix(line, "history_filename:"))
 		}
+
 		if strings.HasPrefix(line, "incorrect_review_time:") {
 			incorrect_review_time, err := strconv.Atoi(strings.TrimSpace(strings.TrimPrefix(line, "incorrect_review_time:")))
 			if err != nil {
 				fmt.Println("Error reading incorrect_review_time")
 				os.Exit(0)
 			}
+
 			config.incorrect_review_time = incorrect_review_time
+		}
+
+		if strings.HasPrefix(line, "blacklist:") {
+			blacklist := strings.TrimSpace(strings.TrimPrefix(line, "blacklist:"))
+			decks := strings.Split(blacklist, ",")
+
+			for _, deck := range decks {
+				s := strings.TrimSpace(deck)
+				if s != "" {
+					config.blacklist = append(config.blacklist, s)
+				}
+			}
 		}
 	}
 

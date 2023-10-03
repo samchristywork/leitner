@@ -97,6 +97,16 @@ func askTime(cards []Flashcard) int64 {
 	return selected_time
 }
 
+func isInBlacklist(deck string, config Config) bool {
+	for _, blacklist := range config.blacklist {
+		if deck == blacklist {
+			return true
+		}
+	}
+
+	return false
+}
+
 func quiz(cards []Flashcard, config Config) QuizScore {
 	clearScreen()
 
@@ -106,6 +116,18 @@ func quiz(cards []Flashcard, config Config) QuizScore {
 	fmt.Println("Filters:")
 	reset()
 	fmt.Println("")
+
+	filtered_cards := []Flashcard{}
+
+	for _, card := range cards {
+		not_in_blacklist := !isInBlacklist(card.deck, config)
+
+		if not_in_blacklist {
+			filtered_cards = append(filtered_cards, card)
+		}
+	}
+
+	cards = filtered_cards
 
 	selected_num := askNumCards()
 	selected_deck := askDeck(cards)
