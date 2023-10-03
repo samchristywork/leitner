@@ -14,6 +14,7 @@ func processLine(line string, history []historyLine) Flashcard {
 		if card.String() == line.card {
 			if line.correct {
 				card.bin += 1
+				card.last_correct = line.last_correct
 			} else {
 				card.bin = 1
 			}
@@ -21,8 +22,6 @@ func processLine(line string, history []historyLine) Flashcard {
 			if card.bin > 5 {
 				card.bin = 5
 			}
-
-			card.last_reviewed = line.last_reviewed
 		}
 	}
 

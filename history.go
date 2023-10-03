@@ -9,9 +9,9 @@ import (
 )
 
 type historyLine struct {
-	card          string
-	correct       bool
-	last_reviewed int64
+	card         string
+	correct      bool
+	last_correct int64
 }
 
 func readHistory(filename string) []historyLine {

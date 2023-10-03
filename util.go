@@ -136,9 +136,9 @@ func printDaysSince(cards []Flashcard) {
 	for _, card := range cards {
 		now := time.Now().Unix()
 
-		days := (now - card.last_reviewed) / (60 * 60 * 24)
+		days := (now - card.last_correct) / (60 * 60 * 24)
 
-		if card.last_reviewed == 0 {
+		if card.last_correct == 0 {
 			days = -1
 		}
 

@@ -7,11 +7,11 @@ import (
 )
 
 type Flashcard struct {
-	deck          string
-	front         string
-	back          string
-	bin           uint32
-	last_reviewed int64
+	deck         string
+	front        string
+	back         string
+	bin          uint32
+	last_correct int64
 }
 
 func (f Flashcard) String() string {
