@@ -129,7 +129,7 @@ func printDecks(cards []Flashcard) {
 	sort.Strings(keys)
 
 	for _, key := range keys {
-		fmt.Println("•", key)
+		fmt.Printf("• %d\t%s\n", decks[key], key)
 	}
 }
 
