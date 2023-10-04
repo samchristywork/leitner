@@ -110,15 +110,18 @@ func printBins(cards []Flashcard, deckFilter string) {
 }
 
 func printDecks(cards []Flashcard) {
-	decks := make(map[string]bool)
+	decks := make(map[string]int)
 
 	for _, card := range cards {
 		if _, ok := decks[card.deck]; !ok {
-			decks[card.deck] = true
+			decks[card.deck] = 1
+		} else {
+			decks[card.deck]++
 		}
 	}
 
 	keys := []string{}
+
 	for key := range decks {
 		keys = append(keys, key)
 	}
