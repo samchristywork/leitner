@@ -131,31 +131,60 @@ func quiz(cards []Flashcard, config Config) QuizScore {
 
 	selected_num := askNumCards()
 	selected_deck := askDeck(cards)
-	selected_bin := askBin(cards, selected_deck)
-	selected_time := askTime(cards)
 
-	questions := []Flashcard{}
+	filtered_cards = []Flashcard{}
+
 	for _, card := range cards {
-		if card.bin == uint32(selected_bin) || selected_bin == 0 {
-			if card.deck == selected_deck || selected_deck == "" {
-				if selected_time == 0 ||
-					card.last_reviewed == 0 ||
-					int64(now)-card.last_reviewed > selected_time*24*60*60 {
-					questions = append(questions, card)
-				}
-			}
+		proper_deck := card.deck == selected_deck ||
+			selected_deck == ""
+
+		if proper_deck {
+			filtered_cards = append(filtered_cards, card)
 		}
 	}
 
+	cards = filtered_cards
+
+	selected_bin := askBin(cards, selected_deck)
+
+	filtered_cards = []Flashcard{}
+
+	for _, card := range cards {
+		proper_bin := card.bin == uint32(selected_bin) ||
+			selected_bin == 0
+
+		if proper_bin {
+			filtered_cards = append(filtered_cards, card)
+		}
+	}
+
+	cards = filtered_cards
+
+	selected_time := askTime(cards)
+
+	filtered_cards = []Flashcard{}
+
+	for _, card := range cards {
+		proper_time := selected_time == 0 ||
+			card.last_correct == 0 ||
+			int64(now)-card.last_correct > selected_time*24*60*60
+
+		if proper_time {
+			filtered_cards = append(filtered_cards, card)
+		}
+	}
+
+	cards = filtered_cards
+
 	if selected_num == 0 {
-		selected_num = len(questions)
+		selected_num = len(cards)
 	}
 
-	if selected_num > len(questions) {
-		selected_num = len(questions)
+	if selected_num > len(cards) {
+		selected_num = len(cards)
 	}
 
-	randomizedQuestions := shuffle(questions, selected_num)
+	randomizedQuestions := shuffle(cards, selected_num)
 
 	score := administerQuiz(randomizedQuestions, config)
 	return score
